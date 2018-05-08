@@ -5,13 +5,13 @@ function preload() {
 
   game.load.tilemap('mario', 'assets/tilemaps/maps/super_mario.json', null, Phaser.Tilemap.TILED_JSON);
   game.load.image('tiles', 'assets/tilemaps/tiles/super_mario.png');
-  // game.load.image('player', 'assets/sprites/phaser-dude.png');
+  game.load.spritesheet('player','assets/player16x16.png', 14, 11)
 
 }
 
 var map;
 var layer;
-var p;
+var player;
 var cursors;
 
 function create() {
@@ -30,26 +30,53 @@ function create() {
 
   cursors = game.input.keyboard.createCursorKeys();
 
+  map.setCollisionBetween(15, 16);
+  map.setCollisionBetween(20, 25);
+  map.setCollisionBetween(27, 29);
+  map.setCollision(40);
+
+  player = game.add.sprite(250,50,'player')
+
+  game.physics.arcade.enable(player)
+
+  player.animations.add('idle',[3,4,5,4],5,true)
+
+  game.physics.enable(player);
+
+  game.physics.arcade.gravity.y = 250;
+
+  player.body.linearDamping = 1;
+  player.body.collideWorldBounds = true;
+
+  game.camera.follow(player);
+
 }
 
 function update() {
 
-  if (cursors.left.isDown)
-  {
-    game.camera.x -= 8;
-  }
-  else if (cursors.right.isDown)
-  {
-    game.camera.x += 8;
-  }
+  player.animations.play('idle')
+
+  game.physics.arcade.collide(player, layer);
+
+  player.body.velocity.x = 0;
 
   if (cursors.up.isDown)
   {
-    game.camera.y -= 8;
+    if (player.body.onFloor())
+    {
+      player.body.velocity.y = -200;
+    }
   }
-  else if (cursors.down.isDown)
+
+  if (cursors.left.isDown)
   {
-    game.camera.y += 8;
+    player.body.velocity.x = -150;
+    player.frame = 2
+  }
+  else if (cursors.right.isDown)
+  {
+    player.body.velocity.x = 150;
+    player.frame = 1
   }
 
 }
