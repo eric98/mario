@@ -6,7 +6,7 @@ var cursors;
 var maxVides = 5
 var lives
 var monedes = 0
-var cors = []
+//var cors = []
 
 var menu = {
   preload() {
@@ -76,6 +76,8 @@ var gameOver = {
 }
 
 var level1 = {
+  cors: [],
+  monedesText: '',
   preload() {
 
     game.load.tilemap('mario', 'assets/tilemaps/maps/super_cub.json', null, Phaser.Tilemap.TILED_JSON);
@@ -140,6 +142,8 @@ var level1 = {
     game.camera.follow(player);
 
     this.drawHearts()
+    this.monedesText = game.add.text(20, 20, 'MONEDES: '+monedes, { font: '20px Arial', fill: '#ffff00' })
+    this.monedesText.fixedToCamera = true
 
   },
   regenerarVida: function (sprite, tile) {
@@ -148,11 +152,9 @@ var level1 = {
 
     lives = maxVides
 
-    cors.forEach(function(cor) {
+    this.cors.forEach(function(cor) {
       cor.frame = 0
     })
-
-    //this.drawHearts()
 
     layer.dirty = true;
     return false
@@ -161,7 +163,7 @@ var level1 = {
     tile.alpha = 1
     tile.index = 1
 
-    cors[--lives].frame = 2
+    this.cors[--lives].frame = 2
 
     layer.dirty = true;
     return false
@@ -171,7 +173,7 @@ var level1 = {
     tile.index = 1
 
     if (lives < maxVides) {
-      cors[lives++].frame = 0
+      this.cors[lives++].frame = 0
     }
 
     layer.dirty = true;
@@ -180,39 +182,29 @@ var level1 = {
   hitCoin: function (sprite, tile) {
     tile.alpha = 1
     tile.index = 1
-    monedes++
+
+    this.monedesText.text ='MONEDES: '+ ++monedes
 
     layer.dirty = true;
     return false
   },
   drawHearts: function () {
-    console.log('33333 ', lives)
-    console.log(game.height-30)
-    cors.forEach(function(cor) {
-      // game.world.remove(cor)
-      cor.kill()
-    })
+    this.cors = []
 
     var scale = 0.1
     for (var i = 0; i < lives; i++) {
-      cors.push(game.add.sprite(10+(30*i), game.height-30, 'heart',0))
-      cors[i].scale.setTo(scale)
-      cors[i].fixedToCamera = true
+      this.cors.push(game.add.sprite(10+(30*i), game.height-30, 'heart',0))
+      this.cors[i].scale.setTo(scale)
+      this.cors[i].fixedToCamera = true
     }
 
     for (var i = lives; i < maxVides; i++) {
-      cors.push(game.add.sprite(10+(30*i), game.height-30, 'heart',2))
-      cors[i].scale.setTo(scale)
-      cors[i].fixedToCamera = true
+      this.cors.push(game.add.sprite(10+(30*i), game.height-30, 'heart',2))
+      this.cors[i].scale.setTo(scale)
+      this.cors[i].fixedToCamera = true
     }
-
   },
   render: function () {
-    game.debug.text('FPS: '+game.time.fps || 'FPS: --',40,20,"#00ff00")
-    game.debug.text('player_X: '+player.body.x,40,40,"#00ff00")
-    game.debug.text('player_Y: '+player.body.y,40,60,"#00ff00")
-    game.debug.text('lives: '+lives,40,80,"#00ff00")
-    game.debug.text('monedes: '+monedes,40,100,"#00ff00")
   },
   update() {
     player.animations.play('idle')
@@ -231,7 +223,7 @@ var level1 = {
 
     if (player.body.y >= 229){
       lives--
-      cors[lives].frame = 2
+      this.cors[lives].frame = 2
       player.body.y = 50
       player.body.x = player.body.x - 50
     }
@@ -259,6 +251,7 @@ var level1 = {
 }
 
 var level2 = {
+  cors: [],
   preload() {
     game.load.tilemap('mario', 'assets/tilemaps/maps/final_cub.json', null, Phaser.Tilemap.TILED_JSON);
     game.load.image('tiles', 'assets/tilemaps/maps/final_cub.png');
@@ -317,6 +310,9 @@ var level2 = {
     game.camera.follow(player);
 
     this.drawHearts()
+    this.monedesText = game.add.text(20, 20, 'MONEDES: '+monedes, { font: '20px Arial', fill: '#ffff00' })
+    this.monedesText.fixedToCamera = true
+
   },
   regenerarVida: function (sprite, tile) {
     tile.alpha = 1
@@ -324,7 +320,7 @@ var level2 = {
 
     lives = maxVides
 
-    cors.forEach(function(cor) {
+    this.cors.forEach(function(cor) {
       cor.frame = 0
     })
 
@@ -337,7 +333,7 @@ var level2 = {
     tile.alpha = 1
     tile.index = 1
 
-    cors[--lives].frame = 2
+    this.cors[--lives].frame = 2
 
     layer.dirty = true;
     return false
@@ -347,7 +343,7 @@ var level2 = {
     tile.index = 1
 
     if (lives < maxVides) {
-      cors[lives++].frame = 0
+      this.cors[lives++].frame = 0
     }
 
     layer.dirty = true;
@@ -356,36 +352,29 @@ var level2 = {
   hitCoin: function (sprite, tile) {
     tile.alpha = 1
     tile.index = 1
-    monedes++
+
+    this.monedesText.text ='MONEDES: '+ ++monedes
 
     layer.dirty = true;
     return false
   },
   drawHearts: function () {
-    cors.forEach(function(cor) {
-      cor.kill()
-    })
+    this.cors = []
 
     var scale = 0.1
     for (var i = 0; i < lives; i++) {
-      cors.push(game.add.sprite(10+(30*i), game.height-30, 'heart',0))
-      cors[i].scale.setTo(scale)
-      cors[i].fixedToCamera = true
+      this.cors.push(game.add.sprite(10+(30*i), game.height-30, 'heart',0))
+      this.cors[i].scale.setTo(scale)
+      this.cors[i].fixedToCamera = true
     }
 
     for (var i = lives; i < maxVides; i++) {
-      cors.push(game.add.sprite(10+(30*i), game.height-30, 'heart',2))
-      cors[i].scale.setTo(scale)
-      cors[i].fixedToCamera = true
+      this.cors.push(game.add.sprite(10+(30*i), game.height-30, 'heart',2))
+      this.cors[i].scale.setTo(scale)
+      this.cors[i].fixedToCamera = true
     }
-
   },
   render: function () {
-    game.debug.text('FPS: '+game.time.fps || 'FPS: --',40,20,"#00ff00")
-    game.debug.text('player_X: '+player.body.x,40,40,"#00ff00")
-    game.debug.text('player_Y: '+player.body.y,40,60,"#00ff00")
-    game.debug.text('lives: '+lives,40,80,"#00ff00")
-    game.debug.text('monedes: '+monedes,40,100,"#00ff00")
   },
   update() {
     player.animations.play('idle')
@@ -404,7 +393,7 @@ var level2 = {
 
     if (player.body.y >= 229){
       lives--
-      cors[lives].frame = 2
+      this.cors[lives].frame = 2
       player.body.y = 50
       player.body.x = player.body.x - 50
     }
