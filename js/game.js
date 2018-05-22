@@ -4,24 +4,21 @@ var layer;
 var player;
 var cursors;
 var maxVides = 5
-var lives = 2
+var lives
 var monedes = 0
 var cors = []
 
 var menu = {
-  button: null,
-  titol: '',
-  copyright: '',
   preload() {
     game.load.spritesheet('button', 'assets/buttons/comencarJoc.png', 193, 71);
   },
   create() {
     game.stage.backgroundColor = "#523aaa"
 
-    titol = game.add.text(game.world.centerX-130, game.world.centerY*0.25, 'Cub Bros', { font: '64px Arial', fill: '#ffff00' })
-    copyright = game.add.text(game.world.width-150, game.world.height-40, 'ERIC 2N DAM', { font: '20px Arial', fill: '#ffff00' })
+    game.add.text(game.width/2-130, game.height/2*0.25, 'Cub Bros', { font: '64px Arial', fill: '#ffff00' })
+    game.add.text(game.width-150, game.height-40, 'ERIC 2N DAM', { font: '20px Arial', fill: '#ffff00' })
 
-    button = game.add.button(game.world.centerX-193/2 , game.world.centerY, 'button', this.startGameButton, this, 2, 1, 0)
+    game.add.button(game.width/2-193/2 , game.height/2, 'button', this.startGameButton, this, 2, 1, 0)
   },
   startGameButton() {
     game.state.start('level1')
@@ -33,21 +30,18 @@ var menu = {
 }
 
 var final = {
-  button: null,
-  titol: '',
-  copyright: '',
   preload() {
     game.load.spritesheet('button', 'assets/buttons/tornarJugar.png', 193, 71);
   },
   create() {
     game.stage.backgroundColor = "#523aaa"
 
-    titol = game.add.text(game.world.centerX-130, game.world.centerY*0.25, 'Has guanyat!', { font: '64px Arial', fill: '#ffff00' })
-    game.add.text(game.world.centerX-130, game.world.centerY, 'Puntuacio: '+monedes, { font: '25px Arial', fill: '#ffff00' })
-    game.add.text(game.world.centerX-130, game.world.centerY*1.5, 'Vides restants: '+lives, { font: '25px Arial', fill: '#ffff00' })
-    copyright = game.add.text(game.world.width-150, game.world.height-40, 'ERIC 2N DAM', { font: '20px Arial', fill: '#ffff00' })
+    game.add.text(game.width/2-130, game.height/2*0.25, 'Has guanyat!', { font: '64px Arial', fill: '#ffff00' })
+    game.add.text(game.width/2-130, game.height/2, 'Puntuacio: '+monedes, { font: '25px Arial', fill: '#ffff00' })
+    game.add.text(game.width/2-130, game.height/2*1.5, 'Vides restants: '+lives, { font: '25px Arial', fill: '#ffff00' })
+    game.add.text(game.width-150, game.height-40, 'ERIC 2N DAM', { font: '20px Arial', fill: '#ffff00' })
 
-    button = game.add.button(30 , game.world.centerY-20, 'button', this.goMenuButton, this, 2, 1, 0)
+    game.add.button(30 , game.height/2-20, 'button', this.goMenuButton, this, 2, 1, 0)
   },
   goMenuButton() {
     game.state.start('menu')
@@ -59,21 +53,18 @@ var final = {
 }
 
 var gameOver = {
-  button: null,
-  titol: '',
-  copyright: '',
   preload() {
     game.load.spritesheet('button', 'assets/buttons/tornarJugar.png', 193, 71);
   },
   create() {
     game.stage.backgroundColor = "#523aaa"
 
-    titol = game.add.text(game.world.centerX-130, game.world.centerY*0.25, 'Has mort!', { font: '64px Arial', fill: '#ffff00' })
-    game.add.text(game.world.centerX-130, game.world.centerY, 'Puntuacio: '+monedes, { font: '25px Arial', fill: '#ffff00' })
-    game.add.text(game.world.centerX-130, game.world.centerY*1.5, 'Vides restants: '+lives, { font: '25px Arial', fill: '#ffff00' })
-    copyright = game.add.text(game.world.width-150, game.world.height-40, 'ERIC 2N DAM', { font: '20px Arial', fill: '#ffff00' })
+    game.add.text(game.width/2-130, game.height/2*0.25, 'Has mort!', { font: '64px Arial', fill: '#ffff00' })
+    game.add.text(game.width/2-130, game.height/2, 'Puntuacio: '+monedes, { font: '25px Arial', fill: '#ffff00' })
+    game.add.text(game.width/2-130, game.height/2*1.5, 'Vides restants: '+lives, { font: '25px Arial', fill: '#ffff00' })
+    game.add.text(game.width-150, game.height-40, 'ERIC 2N DAM', { font: '20px Arial', fill: '#ffff00' })
 
-    button = game.add.button(30 , game.world.centerY-20, 'button', this.goMenuButton, this, 2, 1, 0)
+    game.add.button(30 , game.height/2-20, 'button', this.goMenuButton, this, 2, 1, 0)
   },
   goMenuButton() {
     game.state.start('menu')
@@ -94,6 +85,9 @@ var level1 = {
 
   },
   create() {
+
+    lives = 3
+    monedes = 0
 
     game.stage.backgroundColor = '#787878';
 
@@ -192,6 +186,8 @@ var level1 = {
     return false
   },
   drawHearts: function () {
+    console.log('33333 ', lives)
+    console.log(game.height-30)
     cors.forEach(function(cor) {
       // game.world.remove(cor)
       cor.kill()
@@ -199,13 +195,13 @@ var level1 = {
 
     var scale = 0.1
     for (var i = 0; i < lives; i++) {
-      cors.push(game.add.sprite(10+(30*i), game.world.height-30, 'heart',0))
+      cors.push(game.add.sprite(10+(30*i), game.height-30, 'heart',0))
       cors[i].scale.setTo(scale)
       cors[i].fixedToCamera = true
     }
 
     for (var i = lives; i < maxVides; i++) {
-      cors.push(game.add.sprite(10+(30*i), game.world.height-30, 'heart',2))
+      cors.push(game.add.sprite(10+(30*i), game.height-30, 'heart',2))
       cors[i].scale.setTo(scale)
       cors[i].fixedToCamera = true
     }
@@ -246,7 +242,7 @@ var level1 = {
 
     if (lives == 0){
       // game.paused = true
-      game.state.start('gameOver')
+      game.state.start('menu')
     }
 
     if (cursors.left.isDown)
@@ -372,13 +368,13 @@ var level2 = {
 
     var scale = 0.1
     for (var i = 0; i < lives; i++) {
-      cors.push(game.add.sprite(10+(30*i), game.world.height-30, 'heart',0))
+      cors.push(game.add.sprite(10+(30*i), game.height-30, 'heart',0))
       cors[i].scale.setTo(scale)
       cors[i].fixedToCamera = true
     }
 
     for (var i = lives; i < maxVides; i++) {
-      cors.push(game.add.sprite(10+(30*i), game.world.height-30, 'heart',2))
+      cors.push(game.add.sprite(10+(30*i), game.height-30, 'heart',2))
       cors[i].scale.setTo(scale)
       cors[i].fixedToCamera = true
     }
