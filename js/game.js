@@ -78,12 +78,20 @@ var gameOver = {
 var level1 = {
   cors: [],
   monedesText: '',
+  jumping: false,
   preload() {
 
     game.load.tilemap('mario', 'assets/tilemaps/maps/super_cub.json', null, Phaser.Tilemap.TILED_JSON);
     game.load.image('tiles', 'assets/tilemaps/maps/super_cub.png');
     game.load.spritesheet('player','assets/player16x16.png', 14, 11)
     game.load.spritesheet('heart', 'assets/hearts.png', 300, 300, 3);
+    game.load.image('dust','assets/dust.png')
+
+
+    game.load.audio('coin', ['assets/coin.wav','assets/coin.mp3'])
+    game.load.audio('dust', ['assets/dust.wav','assets/dust.mp3'])
+    game.load.audio('jump', ['assets/jump.wav','assets/jump.mp3'])
+    game.load.audio('dead', ['assets/dead.wav','assets/dead.mp3'])
 
   },
   create() {
@@ -104,6 +112,11 @@ var level1 = {
     layer.wrap = true;
 
     cursors = game.input.keyboard.createCursorKeys();
+
+    this.coinSound = game.add.audio('coin',0.1)
+    this.dustSound = game.add.audio('dust',0.1)
+    this.jumpSound = game.add.audio('jump',0.1)
+    this.deadSound = game.add.audio('dead',0.1)
 
     map.setCollisionBetween(15, 16);
     map.setCollisionBetween(20, 25);
@@ -144,6 +157,13 @@ var level1 = {
     this.drawHearts()
     this.monedesText = game.add.text(20, 20, 'MONEDES: '+monedes, { font: '20px Arial', fill: '#ffff00' })
     this.monedesText.fixedToCamera = true
+
+    // Particles
+    this.dustParticles = game.add.emitter(0,0,150)
+    this.dustParticles.makeParticles('dust')
+    this.dustParticles.setYSpeed(-200,200)
+    this.dustParticles.setXSpeed(-200,200)
+    this.dustParticles.gravity = 500
 
   },
   regenerarVida: function (sprite, tile) {
@@ -212,13 +232,25 @@ var level1 = {
     game.physics.arcade.collide(player, layer);
 
     player.body.velocity.x = 0;
-
-    if (cursors.up.isDown)
-    {
-      if (player.body.onFloor())
-      {
-        player.body.velocity.y = -200;
+    if (player.body.onFloor()) {
+      if (this.jumping){
+        this.dustSound.play()
+        this.dustParticles.x = player.x + player.height/2
+        this.dustParticles.y = player.y + player.height/2
+        this.dustParticles.start(true,300, null, 30)
+        this.jumping = false
       }
+      if (cursors.up.isDown)
+      {
+        if (player.body.onFloor())
+        {
+          player.body.velocity.y = -200;
+          this.jumping = true
+          this.jumpSound.play()
+        }
+      }
+    } else {
+      this.jumping = true
     }
 
     if (player.body.y >= 229){
@@ -233,8 +265,8 @@ var level1 = {
     }
 
     if (lives == 0){
-      // game.paused = true
-      game.state.start('menu')
+      this.deadSound.play()
+      game.state.start('gameOver')
     }
 
     if (cursors.left.isDown)
@@ -257,6 +289,12 @@ var level2 = {
     game.load.image('tiles', 'assets/tilemaps/maps/final_cub.png');
     game.load.spritesheet('player','assets/player16x16.png', 14, 11)
     game.load.spritesheet('heart', 'assets/hearts.png', 300, 300, 3);
+    game.load.image('dust','assets/dust.png')
+
+    game.load.audio('coin', ['assets/coin.wav','assets/coin.mp3'])
+    game.load.audio('dust', ['assets/dust.wav','assets/dust.mp3'])
+    game.load.audio('jump', ['assets/jump.wav','assets/jump.mp3'])
+    game.load.audio('dead', ['assets/dead.wav','assets/dead.mp3'])
   },
   create() {
     game.stage.backgroundColor = '#787878';
@@ -272,6 +310,11 @@ var level2 = {
     layer.wrap = true;
 
     cursors = game.input.keyboard.createCursorKeys();
+
+    this.coinSound = game.add.audio('coin',0.1)
+    this.dustSound = game.add.audio('dust',0.1)
+    this.jumpSound = game.add.audio('jump',0.1)
+    this.deadSound = game.add.audio('dead',0.1)
 
     map.setCollisionBetween(15, 16);
     map.setCollisionBetween(20, 25);
@@ -312,6 +355,13 @@ var level2 = {
     this.drawHearts()
     this.monedesText = game.add.text(20, 20, 'MONEDES: '+monedes, { font: '20px Arial', fill: '#ffff00' })
     this.monedesText.fixedToCamera = true
+
+    // Particles
+    this.dustParticles = game.add.emitter(0,0,150)
+    this.dustParticles.makeParticles('dust')
+    this.dustParticles.setYSpeed(-200,200)
+    this.dustParticles.setXSpeed(-200,200)
+    this.dustParticles.gravity = 500
 
   },
   regenerarVida: function (sprite, tile) {
@@ -382,13 +432,25 @@ var level2 = {
     game.physics.arcade.collide(player, layer);
 
     player.body.velocity.x = 0;
-
-    if (cursors.up.isDown)
-    {
-      if (player.body.onFloor())
-      {
-        player.body.velocity.y = -200;
+    if (player.body.onFloor()) {
+      if (this.jumping){
+        this.dustSound.play()
+        this.dustParticles.x = player.x + player.height/2
+        this.dustParticles.y = player.y + player.height/2
+        this.dustParticles.start(true,300, null, 30)
+        this.jumping = false
       }
+      if (cursors.up.isDown)
+      {
+        if (player.body.onFloor())
+        {
+          player.body.velocity.y = -200;
+          this.jumping = true
+          this.jumpSound.play()
+        }
+      }
+    } else {
+      this.jumping = true
     }
 
     if (player.body.y >= 229){
@@ -403,8 +465,8 @@ var level2 = {
     }
 
     if (lives == 0){
-      game.paused = true
-      // game.state.start('gameOver')
+      this.deadSound.play()
+      game.state.start('gameOver')
     }
 
     if (cursors.left.isDown)
@@ -426,4 +488,3 @@ game.state.add('gameOver',gameOver)
 game.state.add('final',final)
 game.state.add('level1',level1)
 game.state.add('level2',level2)
-//game.state.start('menu')
