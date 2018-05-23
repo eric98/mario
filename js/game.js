@@ -20,7 +20,7 @@ var menu = {
     game.add.button(game.width/2-193/2 , game.height/2, 'button', this.startGameButton, this, 2, 1, 0)
   },
   startGameButton() {
-    game.state.start('level2')
+    game.state.start('level1')
   },
   render: function () {
   },
