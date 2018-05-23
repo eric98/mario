@@ -15,7 +15,7 @@ var menu = {
   create() {
     game.stage.backgroundColor = "#523aaa"
 
-    game.add.text(game.width/2-130, game.height/2*0.25, 'Cub Bros', { font: '64px Arial', fill: '#ffff00' })
+    game.add.text(game.width/2-220, game.height/2*0.25, 'Megaman Bros', { font: '64px Arial', fill: '#ffff00' })
     game.add.text(game.width-150, game.height-40, 'ERIC 2N DAM', { font: '20px Arial', fill: '#ffff00' })
 
     game.add.button(game.width/2-193/2 , game.height/2, 'button', this.startGameButton, this, 2, 1, 0)
@@ -143,9 +143,8 @@ var level1 = {
 
     game.physics.arcade.enable(player)
 
-    player.frame = 4
-
-    //player.animations.add('idle',[3,4,5,4],5,true)
+    player.animations.add('right',[0,1,2,3,4],5,true)
+    player.animations.add('left',[5,6,7,8,9],5,true)
 
     game.physics.enable(player);
 
@@ -229,7 +228,6 @@ var level1 = {
   render: function () {
   },
   update() {
-    //player.animations.play('idle')
 
     game.physics.arcade.collide(player, layer);
 
@@ -273,13 +271,15 @@ var level1 = {
 
     if (cursors.left.isDown)
     {
+      player.animations.play('left')
       player.body.velocity.x = -150;
-      //player.frame = 0
     }
     else if (cursors.right.isDown)
     {
+      player.animations.play('right')
       player.body.velocity.x = 150;
-      //player.frame = 0
+    } else {
+      player.animations.stop()
     }
   }
 }
@@ -289,7 +289,7 @@ var level2 = {
   preload() {
     game.load.tilemap('mario', 'assets/tilemaps/maps/final_cub.json', null, Phaser.Tilemap.TILED_JSON);
     game.load.image('tiles', 'assets/tilemaps/maps/final_cub.png');
-    game.load.spritesheet('player','assets/player16x16.png', 14, 11)
+    game.load.spritesheet('player','assets/megaman_bo.png', 16, 21)
     game.load.spritesheet('heart', 'assets/hearts.png', 300, 300, 3);
     game.load.image('dust','assets/dust.png')
 
@@ -343,7 +343,8 @@ var level2 = {
 
     game.physics.arcade.enable(player)
 
-    player.animations.add('idle',[3,4,5,4],5,true)
+    player.animations.add('right',[0,1,2,3,4],5,true)
+    player.animations.add('left',[5,6,7,8,9],5,true)
 
     game.physics.enable(player);
 
@@ -473,13 +474,17 @@ var level2 = {
 
     if (cursors.left.isDown)
     {
+      player.animations.play('left')
       player.body.velocity.x = -150;
       player.frame = 2
     }
     else if (cursors.right.isDown)
     {
+      player.animations.play('right')
       player.body.velocity.x = 150;
       player.frame = 1
+    } else {
+      player.animations.stop()
     }
   }
 }
