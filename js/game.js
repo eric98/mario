@@ -6,7 +6,6 @@ var cursors;
 var maxVides = 5
 var lives
 var monedes = 0
-//var cors = []
 
 var menu = {
   preload() {
@@ -226,6 +225,7 @@ var level1 = {
     }
   },
   render: function () {
+    game.debug.text('playerY: '+player.body.y,40,20,"#00ff00")
   },
   update() {
 
@@ -253,7 +253,7 @@ var level1 = {
       this.jumping = true
     }
 
-    if (player.body.y >= 229){
+    if (player.body.y >= 219){
       lives--
       this.cors[lives].frame = 2
       player.body.y = 50
@@ -456,7 +456,7 @@ var level2 = {
       this.jumping = true
     }
 
-    if (player.body.y >= 229){
+    if (player.body.y >= 219){
       lives--
       this.cors[lives].frame = 2
       player.body.y = 50
