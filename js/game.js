@@ -83,7 +83,7 @@ var level1 = {
 
     game.load.tilemap('mario', 'assets/tilemaps/maps/super_cub.json', null, Phaser.Tilemap.TILED_JSON);
     game.load.image('tiles', 'assets/tilemaps/maps/super_cub.png');
-    game.load.spritesheet('player','assets/player16x16.png', 14, 11)
+    game.load.spritesheet('player','assets/megaman_bo.png', 16, 21)
     game.load.spritesheet('heart', 'assets/hearts.png', 300, 300, 3);
     game.load.image('dust','assets/dust.png')
 
@@ -143,7 +143,9 @@ var level1 = {
 
     game.physics.arcade.enable(player)
 
-    player.animations.add('idle',[3,4,5,4],5,true)
+    player.frame = 4
+
+    //player.animations.add('idle',[3,4,5,4],5,true)
 
     game.physics.enable(player);
 
@@ -227,7 +229,7 @@ var level1 = {
   render: function () {
   },
   update() {
-    player.animations.play('idle')
+    //player.animations.play('idle')
 
     game.physics.arcade.collide(player, layer);
 
@@ -272,12 +274,12 @@ var level1 = {
     if (cursors.left.isDown)
     {
       player.body.velocity.x = -150;
-      player.frame = 2
+      //player.frame = 0
     }
     else if (cursors.right.isDown)
     {
       player.body.velocity.x = 150;
-      player.frame = 1
+      //player.frame = 0
     }
   }
 }
