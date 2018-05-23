@@ -20,7 +20,7 @@ var menu = {
     game.add.button(game.width/2-193/2 , game.height/2, 'button', this.startGameButton, this, 2, 1, 0)
   },
   startGameButton() {
-    game.state.start('level1')
+    game.state.start('level2')
   },
   render: function () {
   },
@@ -477,13 +477,11 @@ var level2 = {
     {
       player.animations.play('left')
       player.body.velocity.x = -150;
-      player.frame = 2
     }
     else if (cursors.right.isDown)
     {
       player.animations.play('right')
       player.body.velocity.x = 150;
-      player.frame = 1
     } else {
       player.animations.stop()
     }
