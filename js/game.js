@@ -225,7 +225,7 @@ var level1 = {
     }
   },
   render: function () {
-    game.debug.text('playerY: '+player.body.y,40,20,"#00ff00")
+    //game.debug.text('playerY: '+player.body.y,40,20,"#00ff00")
   },
   update() {
 
@@ -428,6 +428,7 @@ var level2 = {
     }
   },
   render: function () {
+    //game.debug.text('playerY: '+player.body.y,40,20,"#00ff00")
   },
   update() {
     player.animations.play('idle')
